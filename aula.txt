@@ -1,0 +1,36 @@
+=========== Using App Router =======================
+-> Todas as pastas dentro de APP, sera uma parte da URI no navegador
+-> Caso não queira que uma pasta não sera colocada na URI, nomeia a pasta entre parenteses
+	ex: (auth), (login), (admin)
+
+=============== Layout =============================
+-> Se quiser utilizar um layout específico em página diferentes, dentro do diretório
+onde quer aplicar o layout, crie um arquivo layout.tsx.
+	ex: (auth)/layout.tsx
+
+- onde devera utilizar o 'children' do 'ReactNode'.
+
+-> se quiser usar um template (layout) para cada page, coleque dentro do diretório.
+
+=============== Passagem de parâmetro ===============
+-> Para vc conseguir um parâmetro que vem da URI, na pasta onde deseja utilizar esse Parâmetro
+precisa iniciar com '[]' (colchetes).
+
+para acessar o parâmetro da URI, é da seguinte forma:
+interface ProductProps {
+	params: {
+		id: string
+	}
+}
+
+export default function Product(props: ProductProps) {
+	return <h1>Page Product: {props.params.id}</h1>
+}
+
+-> para passar VÁRIOS parâmetros na URI, por exemplo:
+http://localhost:3001/catalog/product/555/small/blue
+
+o nome da pasta deve ser da seguinte maneira:
+[...data]
+
+- onde o 'data', contêm todos os parâmetros atribuídos.
