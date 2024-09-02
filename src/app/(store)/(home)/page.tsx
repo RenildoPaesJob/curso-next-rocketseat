@@ -3,6 +3,20 @@ import type { Product } from '@/app/data/types/product'
 import Image from 'next/image'
 import Link from 'next/link'
 
+/**
+ * Cache & Memoization('useMemo' / 'memo' / 'useCallback')
+ *
+ * É um conceito e funcionalidade do REACT
+ * Memoization do REACT garante que um método seja chamado SOMENTE UMA ÚNICA VEZ na mesma página.
+ *
+ * dentro do FETCH de dados, pode ser passado o parametros para dizer se o resultado do request deve ser
+ * caheada ou não e além disso também é possivel definir um time para que a request seja feita novamente.
+ *
+ * 'force-cache' => true
+ * 'no-store' => false
+ *
+ * next: {revalidate: 10} => A partir da primeira chamada da request sera cacheado por 10s o resultado.
+ */
 async function getFeaturedProducts(): Promise<Product[]> {
 	const response = await api('/products/featured')
 
