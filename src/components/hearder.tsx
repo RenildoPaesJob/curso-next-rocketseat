@@ -25,7 +25,7 @@ export function Header() {
 
 			{/* Cart */}
 			<div className="flex items-center gap-4">
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2 cursor-pointer">
 					<ShoppingBag />
 
 					<span className="text-sm">Sacola (0)</span>
