@@ -18,7 +18,11 @@ import Link from 'next/link'
  * next: {revalidate: 10} => A partir da primeira chamada da request sera cacheado por 10s o resultado.
  */
 async function getFeaturedProducts(): Promise<Product[]> {
-	const response = await api('/products/featured')
+	const response = await api('/products/featured', {
+		next: {
+			revalidate: 60 * 60, // após 1hour essa requesição será refeita.
+		},
+	})
 
 	const products = await response.json()
 
@@ -26,6 +30,8 @@ async function getFeaturedProducts(): Promise<Product[]> {
 }
 
 export default async function Home() {
+	await new Promise((resolve) => setTimeout(resolve, 3000))
+
 	const [highlightedProduct, ...otherProducts] = await getFeaturedProducts()
 
 	return (
@@ -72,7 +78,7 @@ export default async function Home() {
 							className="group-hover:scale-105 transition-transform duration-300"
 						/>
 
-						<div className="absolute bottom-10 right-2 h-12 flex items-center gap-2 max-w-[280px] rounded-full border-2 border-zinc-500 bg-black/60 p-1 pl-5">
+						<div className="absolute bottom-10 right-2 h-12 truncate flex items-center gap-2 max-w-[180px] md:max-w-[280px] rounded-full border-2 border-zinc-500 bg-black/60 p-1 pl-5">
 							<span className="text-sm truncate">{product.title}</span>
 							<span className="flex h-full items-center truncate justify-center rounded-full bg-violet-500 px-4 font-semibold text-sm">
 								{product.price.toLocaleString('pt-BR', {
