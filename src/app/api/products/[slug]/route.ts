@@ -8,14 +8,18 @@ export async function GET(
 ) {
 	const slug = z.string().parse(params.slug)
 
-	const product = data.products.filter((product) => product.slug === slug)
+	const product = data.products.find((product) => product.slug === slug)
 
 	// validation for bad requests
 	if (!product) {
-		return Response.json({
-			message: 'Product not found!',
-			status: 400,
-		})
+		return Response.json(
+			{
+				message: 'Product not found!',
+			},
+			{
+				status: 400,
+			},
+		)
 	}
 
 	return Response.json(product)

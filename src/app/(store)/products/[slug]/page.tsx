@@ -24,7 +24,6 @@ async function getProduct(slug: string): Promise<Product> {
 
 async function ProductPage({ params }: ProductProps) {
 	const product = await getProduct(params.slug)
-	console.log('🚀 ~ ProductPage ~ product:', product)
 
 	return (
 		<div className="flex flex-col gap-4 justify-center items-center md:flex-row max-h-[860px] md:gap-0">
