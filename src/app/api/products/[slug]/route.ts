@@ -6,6 +6,9 @@ export async function GET(
 	_: Request,
 	{ params }: { params: { slug: string } },
 ) {
+	// diferença entre parse e safeparse
+	// safeparse => não	retorna um erro
+	// parse => retorna um erro
 	const slug = z.string().parse(params.slug)
 
 	const product = data.products.find((product) => product.slug === slug)

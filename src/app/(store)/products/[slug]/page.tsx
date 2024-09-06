@@ -2,6 +2,7 @@ import { api } from '@/app/data/api'
 import type { Product } from '@/app/data/types/product'
 import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 
 interface ProductProps {
@@ -10,6 +11,9 @@ interface ProductProps {
 	}
 }
 
+// repare que esta função	esta sendo chamada 2 vezes, porém através do conceito de MEMOIZAÇÃO
+// o react com o server components identifica que as 2 request esta mesma pagina,
+// ele evita que a chamada seja duplicada. (DEDUPLICAR)
 async function getProduct(slug: string): Promise<Product> {
 	const response = await api(`/products/${slug}`, {
 		next: {
@@ -20,6 +24,34 @@ async function getProduct(slug: string): Promise<Product> {
 	const products = await response.json()
 
 	return products
+}
+
+// esta function depende do Metadata configurado no layout
+export async function generateMetadata({
+	params,
+}: ProductProps): Promise<Metadata> {
+	const product = await getProduct(params.slug)
+
+	return {
+		title: product.title,
+	}
+}
+
+// Uma função que gera estaticamente um página cacheada no momento da build,
+// uma problema: somente faça o build com o servidor rodando
+// para funcionar é indispensavel que NOME da função nao seja "generateStaticParams",
+// se for diferente é possível que não funcione.
+// dica: NAO use em todos os componentes da application
+export async function generateStaticParams() {
+	// A melhor formar de usar este recurso e quando, existe a página mais acessadaa ou umprodo.
+	const response = await api('/products/featured')
+	const products: Product[] = await response.json()
+
+	return products.map((product) => {
+		return {
+			slug: product.slug,
+		}
+	})
 }
 
 async function ProductPage({ params }: ProductProps) {
@@ -51,7 +83,11 @@ async function ProductPage({ params }: ProductProps) {
 						{formatCurrency(product.price)}
 					</span>
 					<span className="text-sm text-zinc-400">
-						Em 12x s/ juros de R$10,75
+						Em 12x s/ juros de{' '}
+						{(product.price / 12).toLocaleString('pt-BR', {
+							style: 'currency',
+							currency: 'BRL',
+						})}
 					</span>
 				</div>
 

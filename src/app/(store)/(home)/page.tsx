@@ -1,6 +1,7 @@
 import { api } from '@/app/data/api'
 import type { Product } from '@/app/data/types/product'
 import { formatCurrency } from '@/lib/utils'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -30,13 +31,17 @@ async function getFeaturedProducts(): Promise<Product[]> {
 	return products
 }
 
+export const metadata: Metadata = {
+	title: 'Home',
+}
+
 export default async function Home() {
 	await new Promise((resolve) => setTimeout(resolve, 3000))
 
 	const [highlightedProduct, ...otherProducts] = await getFeaturedProducts()
 
 	return (
-		<div className="grid max-h-[860px] grid-cols-9 grid-rows-6 gap-4">
+		<div className="grid max-h-[860px] md:grid-cols-9 grid-rows-6 gap-4">
 			<Link
 				href={`/products/${highlightedProduct.slug}`}
 				className="group relative col-span-6 row-span-6 rounded-lg bg-zinc-900 overflow-hidden flex flex-col justify-center items-center align-middle"
