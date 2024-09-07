@@ -1,6 +1,6 @@
 import { api } from '@/app/data/api'
 import type { Product } from '@/app/data/types/product'
-import { Button } from '@/components/ui/button'
+import AddToCartButton from '@/components/add-to-cart-button'
 import { formatCurrency } from '@/lib/utils'
 import type { Metadata } from 'next'
 import Image from 'next/image'
@@ -122,9 +122,7 @@ async function ProductPage({ params }: ProductProps) {
 					</div>
 				</div>
 
-				<Button className="mt-8 flex h-12 items-center justify-center bg-emerald-600 rounded-full font-semibold">
-					Adicionar ao carrinho
-				</Button>
+				<AddToCartButton productId={product.id} />
 			</div>
 		</div>
 	)
